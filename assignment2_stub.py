@@ -6,7 +6,6 @@ import scipy.io as io
 import numpy as np
 import pdb
 import pylab as pl
-import matplotlib as plt
 
 
 def load_usps_data(fname, digit=3):
