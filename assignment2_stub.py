@@ -50,16 +50,15 @@ def train_perceptron(X, Y, iterations=200, eta=.1):
         # indices of misclassified data
         wrong = (sp.sign(weights.dot(X)) != Y).nonzero()[0]
         # compute accuracy acc[it]
-        # ... your code here
         # calculate the percentage of correct predictions = accuracy
         acc[it] = float(X.shape[1]-wrong.shape[0])/X.shape[1]
         if wrong.shape[0] > 0:
             # pick a random misclassified data point
             misclass_datapoint = random.choice(wrong)
-            print misclass_datapoint
+            miscalss_X = X[:, misclass_datapoint]
+            misclass_Y = Y[misclass_datapoint]
             # update weight vector (use variable learning rate (eta/(1.+it)) )
-            weights += (eta / (1. + it)) * misclass_datapoint
-            # ... your code here
+            weights += (eta / (1. + it)) * miscalss_X * misclass_Y
             if it % 20 == 0:
                 print "Iteration %d:" % it + "Accuracy %0.2f" % acc[it]
     b = -weights[0]
