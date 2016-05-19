@@ -75,7 +75,19 @@ def train_ncc(X, Y):
     Output:      w       -  1D array of length D, weight vector  
                  b       -  bias term for linear classification                          
     '''
-    # ... your code here 
+    # get class data w_{-1} and w_{+1}
+    w_positive = X.T[(Y == 1)]
+    w_negative = X.T[(Y == -1)]
+    # compute class mean of class w_{-1} and w_{+1}
+    mean_w_pos = sp.mean(w_positive, 0)
+    mean_w_neg = sp.mean(w_negative, 0)
+    # weight vector: difference of class means w_{+1} - w_{-1}
+    weights = mean_w_pos - mean_w_neg
+    # bias: 0.5*(w_{+1}.T*w_{+1} - w_{-1}.T*w_{-1})
+    bias = 0.5 * (mean_w_pos.dot(mean_w_pos) - mean_w_neg.dot(mean_w_neg))
+
+    return weights, bias
+
 
 
 def plot_histogram(X, Y, w, b):
@@ -163,8 +175,8 @@ def plot_imgs(X, Y):
 
 
 image_data, labels = load_usps_data('usps.mat', 6)
-#print image_data.shape
-#plot_imgs(image_data, labels)
-train_perceptron(image_data, labels)
+plot_imgs(image_data, labels)
+perc_weights, perc_bias, perc_acc = train_perceptron(image_data, labels)
 analyse_accuracies_perceptron(3)
-
+ncc_weights, ncc_bias = train_ncc(image_data, labels)
+plot_histogram(image_data, labels, ncc_weights, ncc_bias)
