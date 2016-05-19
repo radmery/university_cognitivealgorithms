@@ -6,6 +6,7 @@ import scipy.io as io
 import numpy as np
 import pdb
 import pylab as pl
+import random
 
 
 def load_usps_data(fname, digit=3):
@@ -50,10 +51,14 @@ def train_perceptron(X, Y, iterations=200, eta=.1):
         wrong = (sp.sign(weights.dot(X)) != Y).nonzero()[0]
         # compute accuracy acc[it]
         # ... your code here
+        # calculate the percentage of correct predictions = accuracy
+        acc[it] = float(X.shape[1]-wrong.shape[0])/X.shape[1]
         if wrong.shape[0] > 0:
             # pick a random misclassified data point
-            # ... your code here
+            misclass_datapoint = random.choice(wrong)
+            print misclass_datapoint
             # update weight vector (use variable learning rate (eta/(1.+it)) )
+            weights += (eta / (1. + it)) * misclass_datapoint
             # ... your code here
             if it % 20 == 0:
                 print "Iteration %d:" % it + "Accuracy %0.2f" % acc[it]
@@ -124,6 +129,7 @@ def analyse_accuracies_perceptron(digit=3):
     pl.title('Digit recognition accuracy')
     pl.xlabel('Iterations')
     pl.ylabel('Accuracy')
+    pl.show()
 
 
 def plot_img(a):
@@ -158,7 +164,8 @@ def plot_imgs(X, Y):
 
 
 image_data, labels = load_usps_data('usps.mat', 6)
-print image_data.shape
-plot_imgs(image_data, labels)
+#print image_data.shape
+#plot_imgs(image_data, labels)
 train_perceptron(image_data, labels)
+analyse_accuracies_perceptron(3)
 
