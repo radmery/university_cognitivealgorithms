@@ -1,5 +1,6 @@
 #Juliane Reschke 370450
 #Pierre-Henri Mathieu 377099
+#Maria Browarska 4970657, FU Berlin
 
 import scipy as sp
 import scipy.io as io
